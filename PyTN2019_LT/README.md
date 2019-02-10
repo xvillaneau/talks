@@ -11,9 +11,9 @@ Licensed under the MIT License.
 1. Install Python 3.6 or later
 2. Install requirements with:
 
-    pip install -r requirements.txt
+       pip install -r requirements.txt
 
 3. Run and show the presentation with:
 
-    jupyter nbconvert pytn2019_lt_hypothesis.ipynb --to slides --post serve
+       jupyter nbconvert pytn2019_lt_hypothesis.ipynb --to slides --post serve
 
