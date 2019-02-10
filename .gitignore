@@ -1,0 +1,5 @@
+*.slides.html
+.venv/
+.hypothesis/
+.ipynb_checkpoints/
+.idea/
