@@ -9,4 +9,4 @@ List of talks:
 - [_Hypothesis: Thorough Unit Testing You Can Trust_](hypothesis)
 
 All talks licensed under the MIT License, unless mentioned otherwise.
-Authors of any included material credited separately.
+Authors of any included material [credited separately](CREDITS.md).
