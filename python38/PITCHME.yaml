@@ -17,8 +17,8 @@ theme-override: python38/assets/css/PITCHME.css
 # Logo Setting
 # https://gitpitch.com/docs/settings/logo
 #
-logo : python38/assets/img/logo.png
-logo-postion : top-left
+# logo : python38/assets/img/logo.png
+# logo-postion : top-left
 
 #
 # Layout Setting

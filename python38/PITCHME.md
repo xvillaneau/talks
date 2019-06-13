@@ -1,14 +1,16 @@
-# What's New in Python 3.8?
+---?color=linear-gradient(45deg, white 80%, #ffde57 80%, #ffde57 87%, #4584b6 87%)
+
+# What's New In Python 3.8?
 
 Xavier Villaneau
 
----
+---?color=linear-gradient(0deg, white 70%, #ffde57 70%, #ffde57 76%, #4584b6 76%)
 
-@snap[north span-100]
+@snap[north span-100 h2-white]
 ## Python 3 Feelings over time
 @snapend
 
-@snap[west span-30 text-center text-15]
+@snap[west span-30 text-center text-15 fragment]
 2016  
 ¯\\\_(ツ)\_/¯
 @snapend
@@ -23,16 +25,12 @@ Xavier Villaneau
 🥰
 @snapend
 
-@snap[south span-100 text-10]
-Type hints, f-strings, DataClasses…
-@snapend
+---?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
----
-
-## What's new in Python 3.8?
+## What's New In Python 3.8?
 
 Python 3.8.0b1, July 4, 2019:  
-https://docs.python.org/3.8/whatsnew/3.8.html
+@css[text-black](https://docs.python.org/3.8/whatsnew/3.8.html)
 
 ---?image=python38/assets/img/walrus.jpg&size=cover
 
@@ -40,7 +38,7 @@ https://docs.python.org/3.8/whatsnew/3.8.html
 Copyright © 2015 Gary Bembridge
 @snapend
 
----
+---?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
 ### Assignment
 
@@ -54,7 +52,7 @@ Normally:
 SyntaxError: invalid syntax
 ```
 
-+++
++++?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
 ### Assignment Expressions
 
@@ -66,7 +64,7 @@ New in 3.8:
 
 ```
 
----
+---?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
 ### Examples
 
@@ -82,7 +80,7 @@ while chunk := file.read(8192):
    process(chunk)
 ```
 
-+++
++++?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
 ### More Examples
 
@@ -96,7 +94,7 @@ Share a value in a comprehension
 filtered_data = [y for x in data if (y := f(x)) is not None]
 ```
 
----
+---?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
 ### The Story of PEP 572
 
@@ -104,15 +102,15 @@ filtered_data = [y for x in data if (y := f(x)) is not None]
 
 ---?image=python38/assets/img/avay.jpg&size=cover
 
----
+---?color=linear-gradient(92deg, #4584b6 6%, #ffde57 8%, white 10%)
 
 ### Once the dust settles…
 
 ![](python38/assets/img/gvr_resigns.png)
 
----
+---?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
-### Assignment Expressions: Conclusion
+### Leadership Follow-Up
 
 @ul
 - PEP 8001 — Python Governance Voting Process
@@ -121,7 +119,7 @@ filtered_data = [y for x in data if (y := f(x)) is not None]
 - PEP 572 — Assignment Expressions
 @ulend
 
----
+---?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
 ## Positional-Only Arguments
 
@@ -147,7 +145,7 @@ Traceback (most recent call last):
 TypeError: f() got some positional-only arguments passed as keyword arguments: 'x'
 ```
 
----
+---?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
 ## f-string debugging with =
 
@@ -157,7 +155,7 @@ TypeError: f() got some positional-only arguments passed as keyword arguments: '
 'Looks like x=71 and x*3-1=212'
 ```
 
----
+---?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
 ## Other
 @ul
@@ -167,7 +165,7 @@ TypeError: f() got some positional-only arguments passed as keyword arguments: '
 - `SyntaxWarning` when `is` or `is not` are used with strings or ints
 @ulend
 
----
+---?color=linear-gradient(90deg, #4584b6 7%, #ffde57 7%, #ffde57 10%, white 10%)
 
 ## What is new in Python 3.9?
 
@@ -176,7 +174,7 @@ TypeError: f() got some positional-only arguments passed as keyword arguments: '
 - PEP 594 — Removing dead batteries from the standard library (¯―¯٥)
 @ulend
 
----
+---?color=linear-gradient(45deg, white 80%, #ffde57 80%, #ffde57 87%, #4584b6 87%)
 
 # Thank you!
 
