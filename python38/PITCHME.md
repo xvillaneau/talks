@@ -178,6 +178,8 @@ TypeError: f() got some positional-only arguments passed as keyword arguments: '
 
 # Thank you!
 
-Xavier Villaneau  
+Xavier Villaneau
+
+@size[0.8em](This talk: https://gitpitch.com/xvillaneau/talks?p=python38)
 
 @size[0.8em](xvillaneau@gmail.com | blog.villaneau.fr | @xvillaneau)
