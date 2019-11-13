@@ -43,6 +43,7 @@ LENGTH_CALLS = {
     'cached': length.cached_lns_length,
     'stack': length.stack_lns_length,
     'parallel': length.parallel_lns_length,
+    'cosmology': length.cosmology_lns_length,
 }
 
 def make_length_test(method, depth, string=AOC_EXAMPLE):

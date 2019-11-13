@@ -1,9 +1,11 @@
-from itertools import islice, tee
-from functools import wraps, lru_cache
+from collections import Counter
+from functools import lru_cache
 from typing import Iterator, Dict, List, Tuple
 
-from .split import split, memoized_split_lns
 from .base import imperative_look_and_say as lns
+from .cosmology import split_to_elements, make_length_iterators
+from .split import split, memoized_split_lns
+from .tools import parallel_iterator, iter_goto
 
 @lru_cache(maxsize=None)
 def _recursive_lns_length(string: str, depth: int) -> int:
@@ -73,19 +75,6 @@ def stack_lns_length(string: str, depth: int) -> int:
 
     return results[0]
 
-def parallel_iterator(generator_func):
-    roots = {}
-
-    @wraps(generator_func)
-    def inner(*args):
-        if args not in roots:
-            roots[args] = generator_func(*args)
-        iterator, roots[args] = tee(roots[args], 2)
-        return iterator
-
-    inner.cache_clear = roots.clear
-    return inner
-
 @parallel_iterator
 def _iter_lengths(string: str) -> Iterator[int]:
     yield len(string)
@@ -96,5 +85,24 @@ def _iter_lengths(string: str) -> Iterator[int]:
 def parallel_lns_length(string: str, depth: int) -> int:
     if depth <= 0:
         return len(string)
-    return next(islice(_iter_lengths(string), depth, None))
+    return iter_goto(_iter_lengths(string), depth)
 parallel_lns_length.cache_clear = _iter_lengths.cache_clear
+
+def cosmology_lns_length(string: str, depth: int):
+    if depth <= 25:
+        return recursive_lns_length(string, depth)
+    elements = Counter(split_to_elements(string))
+    ini_iterators = make_length_iterators([n for n, _ in elements])
+    iterators = []
+    for (elem, start), count in elements.items():
+        _iter = ini_iterators[elem].pop()
+        iter_goto(_iter, 25 - start)
+        iterators.append((_iter, count))
+    assert all(not l for l in ini_iterators.values())
+    del elements, ini_iterators
+
+    def inner():
+        while True:
+            yield sum(c * next(i) for i, c in iterators)
+
+    return iter_goto(inner(), depth-26)

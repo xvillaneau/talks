@@ -1,4 +1,4 @@
-from hypothesis import seed, given, strategies as st, settings, Verbosity
+from hypothesis import given, strategies as st
 import pytest
 
 from look_and_say import fast_lengths as lengths
@@ -10,6 +10,7 @@ FUNCTIONS = [
     lengths.cached_lns_length,
     lengths.stack_lns_length,
     lengths.parallel_lns_length,
+    lengths.cosmology_lns_length,
 ]
 
 depths = st.integers(min_value=0, max_value=40)
