@@ -8,6 +8,7 @@ from look_and_say.testing import lns_nice_strings
 FUNCTIONS = [
     lengths.recursive_lns_length,
     lengths.cached_lns_length,
+    lengths.stack_lns_length,
     lengths.parallel_lns_length,
 ]
 

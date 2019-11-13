@@ -34,7 +34,7 @@ def _split(string: str) -> Iterator[str]:
                 return
         yield string
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=128)
 def memoized_split_lns(string: str) -> List[str]:
     """
     Memoized version of Look-and-Say that also splits the result.

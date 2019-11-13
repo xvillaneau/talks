@@ -41,6 +41,7 @@ LENGTH_CALLS = {
     'list': _len_from_atoms(deep.list_deep_lns),
     'recursive': length.recursive_lns_length,
     'cached': length.cached_lns_length,
+    'stack': length.stack_lns_length,
     'parallel': length.parallel_lns_length,
 }
 
