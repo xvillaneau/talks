@@ -11,7 +11,7 @@ LNS_CALLS = {
     'groupby': base.groupby_look_and_say,
 }
 
-def make_lns_test(method, depth, string=AOC_EXAMPLE):
+def make_lns_test(method, depth, string='1'):
     call = LNS_CALLS[method]
     def inner():
         return base.brute_deep_lns(string, depth, call)
@@ -25,7 +25,7 @@ DEEP_CALLS = {
     'stack': deep.stack_deep_lns,
 }
 
-def make_deep_test(method, depth, string=AOC_EXAMPLE):
+def make_deep_test(method, depth, string='1'):
     call = DEEP_CALLS[method]
     def inner():
         return ''.join(call(string, depth))
@@ -46,7 +46,7 @@ LENGTH_CALLS = {
     'cosmology': length.cosmology_lns_length,
 }
 
-def make_length_test(method, depth, string=AOC_EXAMPLE):
+def make_length_test(method, depth, string='1'):
     call = LENGTH_CALLS[method]
     def inner():
         if hasattr(call, 'cache_clear'):
