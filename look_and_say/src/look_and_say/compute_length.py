@@ -2,10 +2,10 @@ from collections import Counter
 from functools import lru_cache
 from typing import Iterator, Dict, List, Tuple
 
-from .base import imperative_look_and_say as lns
+from .core import look_and_say, memoized_step
 from .cosmology import split_to_elements, make_length_iterators
-from .split import split, memoized_split_lns
 from .tools import parallel_iterator, iter_goto
+
 
 @lru_cache(maxsize=None)
 def _recursive_lns_length(string: str, depth: int) -> int:
@@ -13,20 +13,24 @@ def _recursive_lns_length(string: str, depth: int) -> int:
         return len(string)
     return sum(
         _recursive_lns_length(atom, depth - 1)
-        for atom in memoized_split_lns(string)
+        for atom in memoized_step(string)
     )
+
 
 def recursive_lns_length(string: str, depth: int) -> int:
     if depth <= 0:
         return len(string)
-    return _recursive_lns_length(lns(string), depth - 1)
+    return _recursive_lns_length(look_and_say(string), depth - 1)
+
+
 recursive_lns_length.cache_clear = _recursive_lns_length.cache_clear
+
 
 def cached_lns_length(string: str, depth: int) -> int:
     if depth <= 0:
         return len(string)
     cache: Dict[Tuple[str, int], int] = {}
-    stack: List[Tuple[str, int]] = [(lns(string), depth-1)]
+    stack: List[Tuple[str, int]] = [(look_and_say(string), depth - 1)]
     while stack:
         _str, _depth = current = stack[-1]
         if not _depth:
@@ -34,8 +38,8 @@ def cached_lns_length(string: str, depth: int) -> int:
             stack.pop()
             continue
         result = 0
-        for atom in memoized_split_lns(_str):
-            key = (atom, _depth-1)
+        for atom in memoized_step(_str):
+            key = (atom, _depth - 1)
             if key not in cache:
                 stack.append(key)
                 break
@@ -43,21 +47,22 @@ def cached_lns_length(string: str, depth: int) -> int:
         else:
             cache[current] = result
             stack.pop()
-    return cache[(lns(string), depth-1)]
+    return cache[(look_and_say(string), depth - 1)]
+
 
 def stack_lns_length(string: str, depth: int) -> int:
     if depth <= 0:
         return len(string)
     cache: Dict[Tuple[str, int], int] = {}
-    calls = [('get', lns(string), depth-1)]
+    calls = [("get", look_and_say(string), depth - 1)]
     results = []
     while calls:
         current = calls.pop()
         op = current[0]
-        if op == 'sum':
+        if op == "sum":
             results[-1] = results[-2] + results.pop()
 
-        elif op == 'set':
+        elif op == "set":
             cache[current[1:]] = results[-1]
 
         else:  # get
@@ -67,26 +72,31 @@ def stack_lns_length(string: str, depth: int) -> int:
             elif key in cache:
                 results.append(cache[key])
             else:
-                calls.append(('set', _str, _depth))
-                atoms = memoized_split_lns(_str)
-                calls.extend([('sum',)] * (len(atoms) - 1))
-                for atom in memoized_split_lns(_str):
-                    calls.append(('get', atom, _depth-1))
+                calls.append(("set", _str, _depth))
+                atoms = memoized_step(_str)
+                calls.extend([("sum",)] * (len(atoms) - 1))
+                for atom in memoized_step(_str):
+                    calls.append(("get", atom, _depth - 1))
 
     return results[0]
+
 
 @parallel_iterator
 def _iter_lengths(string: str) -> Iterator[int]:
     yield len(string)
-    iterators = [_iter_lengths(s) for s in split(lns(string))]
+    iterators = [_iter_lengths(s) for s in memoized_step(string)]
     while True:
         yield sum(next(i) for i in iterators)
+
 
 def parallel_lns_length(string: str, depth: int) -> int:
     if depth <= 0:
         return len(string)
     return iter_goto(_iter_lengths(string), depth)
+
+
 parallel_lns_length.cache_clear = _iter_lengths.cache_clear
+
 
 def cosmology_lns_length(string: str, depth: int):
     if depth <= 25:
@@ -105,4 +115,4 @@ def cosmology_lns_length(string: str, depth: int):
         while True:
             yield sum(c * next(i) for i, c in iterators)
 
-    return iter_goto(inner(), depth-26)
+    return iter_goto(inner(), depth - 26)

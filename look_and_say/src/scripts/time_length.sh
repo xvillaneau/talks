@@ -15,7 +15,7 @@ export PYTHONPATH
 DEPTH=$(python -c "print(int(${1:-25}))") || exit 1
 
 # for cmd in list recursive parallel cached cosmology; do
- for cmd in parallel cached cosmology; do
+for cmd in parallel cached cosmology; do
 #for cmd in cosmology; do
   echo "Time for ${cmd} length at a depth of ${DEPTH}:"
   python -m timeit -s 'from look_and_say.timing import make_length_test' \
