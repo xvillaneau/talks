@@ -14,11 +14,11 @@ export PYTHONPATH
 # Extract and test the DEPTH argument
 DEPTH=$(python -c "print(int(${1:-25}))") || exit 1
 
-# for cmd in list recursive parallel cached; do
-for cmd in parallel stack cached cosmology; do
-  echo "Time for ${cmd} length at a depth of ${DEPTH}:"
-  python -m timeit -s 'from look_and_say.timing import make_length_test' \
-                   -s "call = make_length_test('${cmd}', depth=${DEPTH})" \
+for cmd in brute list linked recursive stack; do
+#for cmd in list linked; do
+  echo "Time for ${cmd}_dns_lns at a depth of ${DEPTH}:"
+  python -m timeit -s 'from look_and_say.timing import make_deep_test' \
+                   -s "call = make_deep_test('${cmd}', depth=${DEPTH})" \
                    'call()'
 done
 
