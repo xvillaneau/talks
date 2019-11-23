@@ -1,0 +1,6 @@
+1       "one 1"
+11      "two 1s"
+21      "one 2, one 1"
+1211    "one 1, one 2, two 1s"
+111221  "three 1s, two 2s, one 1"
+312211  ...
