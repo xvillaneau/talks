@@ -1,4 +1,4 @@
-from look_and_say.compute_deep import list_deep_lns
+from look_and_say.compute_length import recursive_lns_length, cosmology_lns_length
 
-res = list_deep_lns("1", 50)
-print(len(res))
+res = cosmology_lns_length("123456789", 1000)
+print(res)

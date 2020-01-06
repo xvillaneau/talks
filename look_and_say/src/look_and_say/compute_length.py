@@ -1,84 +1,35 @@
 from collections import Counter
 from functools import lru_cache
-from typing import Iterator, Dict, List, Tuple
+from typing import Iterator
 
 from .core import look_and_say, memoized_step
 from .cosmology import split_to_elements, make_length_iterators
 from .tools import parallel_iterator, iter_goto
 
 
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=2048)
 def _recursive_lns_length(string: str, depth: int) -> int:
     if depth <= 0:
         return len(string)
-    return sum(
-        _recursive_lns_length(atom, depth - 1)
-        for atom in memoized_step(string)
-    )
+    res, n_depth = 0, depth - 1
+    for atom in memoized_step(string):
+        res += _recursive_lns_length(atom, n_depth)
+    return res
+
+
+def recursive_lns_length_iter(string: str) -> Iterator[int]:
+    yield len(string)
+    i, string = 0, look_and_say(string)
+    while True:
+        yield _recursive_lns_length(string, i)
+        i += 1
 
 
 def recursive_lns_length(string: str, depth: int) -> int:
-    if depth <= 0:
-        return len(string)
-    return _recursive_lns_length(look_and_say(string), depth - 1)
+    return iter_goto(recursive_lns_length_iter(string), depth)
 
 
 recursive_lns_length.cache_clear = _recursive_lns_length.cache_clear
-
-
-def cached_lns_length(string: str, depth: int) -> int:
-    if depth <= 0:
-        return len(string)
-    cache: Dict[Tuple[str, int], int] = {}
-    stack: List[Tuple[str, int]] = [(look_and_say(string), depth - 1)]
-    while stack:
-        _str, _depth = current = stack[-1]
-        if not _depth:
-            cache[current] = len(_str)
-            stack.pop()
-            continue
-        result = 0
-        for atom in memoized_step(_str):
-            key = (atom, _depth - 1)
-            if key not in cache:
-                stack.append(key)
-                break
-            result += cache[key]
-        else:
-            cache[current] = result
-            stack.pop()
-    return cache[(look_and_say(string), depth - 1)]
-
-
-def stack_lns_length(string: str, depth: int) -> int:
-    if depth <= 0:
-        return len(string)
-    cache: Dict[Tuple[str, int], int] = {}
-    calls = [("get", look_and_say(string), depth - 1)]
-    results = []
-    while calls:
-        current = calls.pop()
-        op = current[0]
-        if op == "sum":
-            results[-1] = results[-2] + results.pop()
-
-        elif op == "set":
-            cache[current[1:]] = results[-1]
-
-        else:  # get
-            _str, _depth = key = current[1:]
-            if _depth == 0:
-                results.append(len(_str))
-            elif key in cache:
-                results.append(cache[key])
-            else:
-                calls.append(("set", _str, _depth))
-                atoms = memoized_step(_str)
-                calls.extend([("sum",)] * (len(atoms) - 1))
-                for atom in memoized_step(_str):
-                    calls.append(("get", atom, _depth - 1))
-
-    return results[0]
 
 
 @parallel_iterator
@@ -98,21 +49,25 @@ def parallel_lns_length(string: str, depth: int) -> int:
 parallel_lns_length.cache_clear = _iter_lengths.cache_clear
 
 
-def cosmology_lns_length(string: str, depth: int):
-    if depth <= 25:
-        return recursive_lns_length(string, depth)
+def _cosmology_lns_length_iter(string: str):
     elements = Counter(split_to_elements(string))
     ini_iterators = make_length_iterators([n for n, _ in elements])
     iterators = []
-    for (elem, start), count in elements.items():
+
+    for (elem, start), _count in elements.items():
         _iter = ini_iterators[elem].pop()
-        iter_goto(_iter, 25 - start)
-        iterators.append((_iter, count))
-    assert all(not l for l in ini_iterators.values())
+        iter_goto(_iter, 23 - start)
+        iterators.append((_iter, _count))
+
+    if any(ini_iterators.values()):
+        raise RuntimeError()
     del elements, ini_iterators
 
-    def inner():
-        while True:
-            yield sum(c * next(i) for i, c in iterators)
+    while True:
+        yield sum(c * next(i) for i, c in iterators)
 
-    return iter_goto(inner(), depth - 26)
+
+def cosmology_lns_length(string: str, depth: int):
+    if depth < 24:
+        return recursive_lns_length(string, depth)
+    return iter_goto(_cosmology_lns_length_iter(string), depth - 24)

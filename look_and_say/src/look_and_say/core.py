@@ -67,9 +67,7 @@ def split(string: str) -> List[str]:
 
 def _split(string: str) -> Iterator[str]:
     """Internal recursive generator for splitting"""
-    if string == "22":
-        yield string
-    elif RE_ENDSPLIT.search(string):
+    if RE_ENDSPLIT.search(string):
         yield from _split(string[:-2])
         yield "22"
     else:

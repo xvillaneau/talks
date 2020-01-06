@@ -25,3 +25,7 @@ FUNCTIONS = [
 @pytest.mark.parametrize("call", FUNCTIONS)
 def test_look_and_say_base(string, description, call):
     assert call(string) == description
+
+
+def test_split():
+    assert core.split("22") == ["22"]
